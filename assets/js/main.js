@@ -9,7 +9,7 @@
     
     var cfg = {
         scrollDuration : 800, // smoothscroll duration
-       
+        mailChimpURL   : 'https://facebook.us8.list-manage.com/subscribe/post?u=cdb7b577e41181934ed6a6a44&amp;id=e6957d85dc'   // mailchimp url
     },
 
     $WIN = $(window);
@@ -198,7 +198,7 @@
             containerBricks.masonry({
                 itemSelector: '.masonry__brick',
                 percentPosition: true,
-                resize: true,
+                resize: true
             });
         });
 
@@ -294,6 +294,37 @@
     };
 
 
+   /* AjaxChimp
+    * ------------------------------------------------------ */
+    var clAjaxChimp = function() {
+        
+        $('#mc-form').ajaxChimp({
+            language: 'es',
+            url: cfg.mailChimpURL
+        });
+
+        // Mailchimp translation
+        //
+        //  Defaults:
+        //	 'submit': 'Submitting...',
+        //  0: 'We have sent you a confirmation email',
+        //  1: 'Please enter a value',
+        //  2: 'An email address must contain a single @',
+        //  3: 'The domain portion of the email address is invalid (the portion after the @: )',
+        //  4: 'The username portion of the email address is invalid (the portion before the @: )',
+        //  5: 'This email address looks fake or invalid. Please enter a real email address'
+
+        $.ajaxChimp.translations.es = {
+            'submit': 'Submitting...',
+            0: '<i class="fa fa-check"></i> We have sent you a confirmation email',
+            1: '<i class="fa fa-warning"></i> You must enter a valid e-mail address.',
+            2: '<i class="fa fa-warning"></i> E-mail address is not valid.',
+            3: '<i class="fa fa-warning"></i> E-mail address is not valid.',
+            4: '<i class="fa fa-warning"></i> E-mail address is not valid.',
+            5: '<i class="fa fa-warning"></i> E-mail address is not valid.'
+        } 
+
+    };
 
 
    /* Back to Top
@@ -343,15 +374,10 @@
 
         if (typeof google === 'object' && typeof google.maps === 'object') {
 
-            var mapSelector = $("#map-wrap"),
-                dlat    = mapSelector.data("lat"),
-                dlong   = mapSelector.data("long"),
-                dmarker = mapSelector.data("marker");
-
             // 37.422424, -122.085661
 
-            var latitude = dlat,
-                longitude = dlong,
+            var latitude = 37.422424,
+                longitude = -122.085661,
                 map_zoom = 14,
                 main_color = '#0054a5',
                 saturation_value = -30,
@@ -364,9 +390,9 @@
 
             // marker url
             if ( winWidth > 480 ) {
-                marker_url = dmarker;
+                marker_url = 'images/icon-location@2x.png';
             } else {
-                marker_url = dmarker;
+                marker_url = 'images/icon-location.png';
             }
 
             // map style
@@ -578,24 +604,6 @@
 
     };
 
-    // MC Scripts
-    var $subscribe = $( '.subscribe-form' );
-    if( $subscribe.length ){
-        window.fnames = new Array();
-        window.ftypes = new Array();
-        fnames[0]='EMAIL';
-        ftypes[0]='email';
-        fnames[1]='FNAME';
-        ftypes[1]='text';
-        fnames[2]='LNAME';
-        ftypes[2]='text';
-        fnames[3]='ADDRESS';
-        ftypes[3]='address';
-        fnames[4]='PHONE';
-        ftypes[4]='phone';
-        fnames[5]='BIRTHDAY';
-        ftypes[5]='birthday';
-    }
 
    /* Initialize
     * ------------------------------------------------------ */
@@ -612,13 +620,9 @@
         clPlaceholder();
         clAlertBoxes();
         clAOS();
+        clAjaxChimp();
         clBackToTop();
-
-        var $map = $( '#map-wrap' );
-        if( $map.length ){
-            clGoogleMap();
-        }
-        
+        clGoogleMap();
 
     })();
         
